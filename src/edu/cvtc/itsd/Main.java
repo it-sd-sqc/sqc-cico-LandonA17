@@ -41,26 +41,41 @@ public class Main {
     public void insertString(FilterBypass fb, int offset, String stringToAdd, AttributeSet attr)
         throws BadLocationException
     {
-      if (fb.getDocument() != null) {
-        super.insertString(fb, offset, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
+      if (isNumeric(stringToAdd)) {
+        if (fb.getDocument() != null) {
+          super.insertString(fb, offset, stringToAdd, attr);
+        }
+        else {
+          Toolkit.getDefaultToolkit().beep();
+        }
       }
     }
 
     @Override
     public void replace(FilterBypass fb, int offset, int lengthToDelete, String stringToAdd, AttributeSet attr)
-        throws BadLocationException
-    {
-      if (fb.getDocument() != null) {
-        super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
-      }
-      else {
-        Toolkit.getDefaultToolkit().beep();
+        throws BadLocationException {
+      if (isNumeric(stringToAdd)) {
+        if (fb.getDocument() != null) {
+          super.replace(fb, offset, lengthToDelete, stringToAdd, attr);
+        } else {
+          Toolkit.getDefaultToolkit().beep();
+        }
       }
     }
+    private boolean isNumeric(String input) {
+      if (input == null || input.isEmpty()) {
+        return false;
+      }
+      for (char c : input.toCharArray()) {
+        if (!Character.isDigit(c)) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
+
+
 
   // Lookup the card information after button press ///////////////////////////
   public static class Update implements ActionListener {
